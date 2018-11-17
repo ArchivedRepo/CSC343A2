@@ -59,7 +59,7 @@ FROM country
 WHERE id not in (
         SELECT country_id
         FROM Result2to4
-)) UNION (SELECT * FROM Result0to2);
+)) UNION (SELECT * FROM Result2to4);
 
 DROP VIEW IF EXISTS Result4to6 CASCADE;
 
