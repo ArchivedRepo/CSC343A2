@@ -30,46 +30,53 @@ SELECT EXTRACT(YEAR FROM s.e_date) as year, c.name as countryName, p.name_short 
 FROM country c, party p, SupportRate s
 WHERE c.id = s.country_id and p.id = s.party_id;
 
+DROP VIEW IF EXISTS NameSupportAvg CASCADE;
+
+CREATE VIEW NameSupportAvg AS
+SELECT year, countryName, partyName, avg(support_rate) as support_rate
+FROM NameSupport
+GROUP BY year, countryName, partyName;
+
 DROP VIEW IF EXISTS Range0to5 CASCADE;
 
 CREATE VIEW Range0to5 AS
 SELECT year, countryName, '(0-5]' as voteRange, partyName
-FROM NameSupport
+FROM NameSupportAvg
 WHERE support_rate > 0 and support_rate <= 5;
 
 DROP VIEW IF EXISTS Range5to10 CASCADE;
 
 CREATE VIEW Range5to10 AS
 SELECT year, countryName, '(5-10]' as voteRange, partyName
-FROM NameSupport
+FROM NameSupportAvg
 WHERE support_rate > 5 and support_rate <= 10;
 
 DROP VIEW IF EXISTS Range10to20 CASCADE;
 
 CREATE VIEW Range10to20 AS
 SELECT year, countryName, '(10-20]' as voteRange, partyName
-FROM NameSupport
+FROM NameSupportAvg
 WHERE support_rate > 10 and support_rate <= 20;
 
 DROP VIEW IF EXISTS Range20to30 CASCADE;
 
 CREATE VIEW Range20to30 AS
 SELECT year, countryName, '(20-30]' as voteRange, partyName
-FROM NameSupport
+FROM NameSupportAvg
 WHERE support_rate > 20 and support_rate <= 30;
 
 DROP VIEW IF EXISTS Range30to40 CASCADE;
 
 CREATE VIEW Range30to40 AS
 SELECT year, countryName, '(30-40]' as voteRange, partyName
-FROM NameSupport
+FROM NameSupportAvg
 WHERE support_rate > 30 and support_rate <= 40;
 
 DROP VIEW IF EXISTS RangeAbove40 CASCADE;
 
 CREATE VIEW RangeAbove40 AS
 SELECT year, countryName, '(40-100]' as voteRange, partyName
-FROM NameSupport
+FROM NameSupportAvg
 WHERE support_rate > 40;
 
 -- the answer to the query 
